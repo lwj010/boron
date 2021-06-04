@@ -88,7 +88,7 @@ class App extends Component {
   };
 
   getContract(web3, abi, address) {
-    const contract = new web3.eth.Contract(JSON.parse(abi.result), address);
+    const contract = new web3.eth.Contract(abi, address);
 
     return contract
   }

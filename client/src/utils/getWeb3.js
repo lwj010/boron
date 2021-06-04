@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-const FALLBACK_WEB3_PROVIDER = process.env.REACT_APP_NETWORK || 'http://0.0.0.0:8545';
+const FALLBACK_WEB3_PROVIDER = process.env.REACT_APP_NETWORK || 'https://mainnet.infura.io/v3/05cafed4c55443a9979c110ce1d8f186';
 
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
@@ -7,7 +7,13 @@ const getWeb3 = () =>
     window.addEventListener('load', async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
+        
+        await window.ethereum.send('eth_requestAccounts');
+    
         const web3 = new Web3(window.ethereum);
+
+        console.log('Using window web3');
+        console.log(web3);
         try {
           // Request account access if needed
           await window.ethereum.enable();
@@ -20,7 +26,7 @@ const getWeb3 = () =>
       // Legacy dapp browsers...
       else if (window.web3) {
         // Use Mist/MetaMask's provider.
-        const web3 = window.web3;
+        const web3 = window.web3.currentProvider;
         console.log('Injected web3 detected.');
         resolve(web3);
       }
@@ -39,7 +45,7 @@ const getGanacheWeb3 = () => {
   if (isProd) {
     return null;
   }
-  const provider = new Web3.providers.HttpProvider('http://0.0.0.0:8545');
+  const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/05cafed4c55443a9979c110ce1d8f186');
   const web3 = new Web3(provider);
   console.log('No local ganache found.');
   return web3;
